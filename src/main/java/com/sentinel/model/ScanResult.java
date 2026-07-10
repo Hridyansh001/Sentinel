@@ -1,0 +1,35 @@
+package com.sentinel.model;
+
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;  // makes getters setters automatically
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ScanResult {
+    private List<String> reasons;
+
+    private int riskScore;
+
+    private String verdict;
+    private String timestamp;
+    private String text;
+}
+
+
+
+
+
+    //no need for contructor manually lombok makes it
+//    public ScanResult (List<String> reasons, int riskScore, String verdict , String timestamp, String text) {
+//        this.reasons = reasons;
+//
+//        this.riskScore = riskScore;
+//        this.verdict = verdict;
+//        this.timestamp = timestamp;
+//        this.text = text;
+//    }
+
