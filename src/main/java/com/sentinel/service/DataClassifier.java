@@ -23,7 +23,7 @@ public class DataClassifier {
 
     @Data
     @AllArgsConstructor
-    private static class ClassificationResult
+    public static class ClassificationResult
     {
         private final int score;
         private final String verdict;
@@ -35,7 +35,7 @@ public class DataClassifier {
         Matcher matcher = pattern.matcher(text);
         return matcher.find();
     }
-    public ClassificationResult clasify(String text)
+    public  ClassificationResult clasify(String text)
     {
         List<String> reasons = new ArrayList<>();
 

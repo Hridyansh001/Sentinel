@@ -10,13 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScanResult {
-    private List<String> reasons;
-
+    private String text;
     private int riskScore;
-
     private String verdict;
     private String timestamp;
-    private String text;
+    private List<String> reasons;
 }
 
 
