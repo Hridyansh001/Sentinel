@@ -15,6 +15,13 @@ public class ScanResult {
     private String verdict;
     private String timestamp;
     private List<String> reasons;
+    public ScanResult(String text, int riskScore, String verdict, List<String> reasons)
+    {
+        this.text=text;
+        this.riskScore=riskScore;
+        this.verdict=verdict;
+        this.reasons=reasons;
+    }
 }
 
 
