@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataClassifier {
 
+    private final EntropyCalculator entropyCalculator;
+    public DataClassifier(EntropyCalculator entropycalculator){
+        this.entropyCalculator=entropycalculator;
+    }
     public static final Pattern AADHAAR = Pattern.compile("\\b[0-9]{4}\\s?[0-9]{4}\\s?[0-9]{4}\\b");
     public static final Pattern CreditCard = Pattern.compile("^[0-9]{13,19}$");
     public static final Pattern PANCARD = Pattern.compile("\\b[A-Z]{5}[0-9]{4}[A-Z]{1}\\b");
@@ -86,6 +90,16 @@ public class DataClassifier {
         if (matches(SOURCE_CODE, text)) {
             reasons.add("Source code or private key detected");
             score += 60;
+        }
+
+        for(String word:text.split("\\s+"))
+        {
+            if(entropyCalculator.ishighEntropy(word))
+            {
+                reasons.add("High entropy String likely api key or password");
+                score+=60;
+                break;
+            }
         }
         score=Math.min(score,100);
         String verdict;
