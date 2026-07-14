@@ -132,3 +132,40 @@ document.addEventListener("keydown",(e)=>
         return false;
     }
 },true)
+
+function createBanner(message, type="warning")
+{
+    removeBanner();
+    const banner = document.createElement("div");
+    banner.id = "Sentinel-Banner";
+    const icon = type ==="blocked" ? "🚫" : "⚠️";
+    const title = type ==="blocked"?"Blocked":"Warning";
+
+    document.body.appendChild(banner);
+
+    banner.innerHTML=`
+    <button class="sg-banner-close" id="sg-banner-close-btn">✕</button>
+    <div class="sg-banner-header">
+      Sentinel — ${title}
+    </div>
+    <div class="sg-banner-reasons">${message}</div>
+    `
+
+    const closebtn = document.getElementById("sg-banner-close-btn");
+    if(closebtn) 
+    {
+        closebtn.addEventListener("click",()=>
+        {
+            banner.remove();
+        })
+    }
+}
+
+function removeBanner()
+{
+    const old = document.getElementById("Sentinel-Banner");
+    if(old) 
+    {
+        old.remove();
+    }
+}
