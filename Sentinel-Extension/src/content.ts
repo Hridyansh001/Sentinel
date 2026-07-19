@@ -1,13 +1,17 @@
-const backend_url = "http://localhost:8080/api/scan";
-let isBlocked = false;
-let timeout = null;
-let overrideOption = false;
-let lastValue="";
+const backend_url :string = "http://localhost:8080/api/scan";
+let isBlocked :boolean = false;
+let timeout : ReturnType<typeof setTimeout> |undefined=undefined ;
+let overrideOption :boolean= false;
+let lastValue:string="";
 console.log("sentinel started");
-function logToTerminal(message, type = "info") {
+function logToTerminal(
+    message:string, 
+    type:string = "info"):void {
 //   if (!isExtensionContextValid()) return;
   try {
-    chrome.storage.local.get(["sg_terminal_logs"], (data) => {
+    chrome.storage.local.get(
+        ["sg_terminal_logs"], 
+        (data:any) => {
       if (chrome.runtime.lastError) return;
       const logs = data.sg_terminal_logs || [];
       const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
@@ -19,9 +23,9 @@ function logToTerminal(message, type = "info") {
     // Ignore runtime context errors
   }
 }
-function ToggleSendButton(disabled)
+function ToggleSendButton(disabled :boolean) :void
 {
-    document.querySelectorAll("button").forEach(button => {
+    document.querySelectorAll<HTMLButtonElement>("button").forEach(button => {
 
         const label = (button.innerText || "").toLowerCase();
         const aria = (button.getAttribute("aria-label") || "").toLowerCase();
@@ -42,7 +46,7 @@ function ToggleSendButton(disabled)
             button.style.pointerEvents="auto";
             button.onclick = null;
         }
-        button.style.opacity = disabled ? 0.4 : 1;
+        button.style.opacity = disabled ? "0.4" : "1";
         button.style.cursor = disabled ? "not-allowed" : "pointer";
     }
     });
@@ -53,11 +57,12 @@ function detectinput()
 {
     
     const editor = 
-    document.querySelector('[contenteditable="true"]')|| document.querySelector("textarea");
+    (document.querySelector('[contenteditable="true"]')?? document.querySelector("textarea") )as HTMLElement | HTMLTextAreaElement | null;
     if(!editor)
         return;
 
-    const text = (editor.innerText || editor.value || "");
+    // ?? checks for only null and undefined || checks for all falsy values (like 0 nan null undefined)
+    const text = editor instanceof HTMLTextAreaElement ? editor.value : editor.innerText || "";
 
     if(!text || text.length<5)
     {
@@ -85,12 +90,12 @@ function detectinput()
                     }
                 );
                 if(!response.ok)  throw new Error ("HTTP error" + response.status);
-                const result = await response.json();
+                const result : any = await response.json();
                 console.log("[Sentinel]" ,result);
                 handleResult(result);
 
-            } catch (err) {
-                logToTerminal(`Text scan failed backend unreachable` + "error");
+            } catch (err:unknown) {
+                logToTerminal(`Text scan failed backend unreachable` , "error");
                 console.error("[sentinel] Backend error" , err);
             }
             
@@ -99,7 +104,7 @@ function detectinput()
     }
 }
 
-function handleResult(result)
+function handleResult(result:any)
 {
     if(result.verdict === "BLOCKED" )
     {
@@ -133,7 +138,7 @@ document.addEventListener("keydown",(e)=>
     }
 },true)
 
-function createBanner(message, type="warning")
+function createBanner(message:any, type="warning")
 {
     removeBanner();
     const banner = document.createElement("div");
